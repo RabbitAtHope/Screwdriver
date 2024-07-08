@@ -34,3 +34,46 @@ os.system("color")
 
 #===========================#
 
+def getDimensions():
+
+    width = win32api.GetSystemMetrics(win32con.SM_CXVIRTUALSCREEN)
+    height = win32api.GetSystemMetrics(win32con.SM_CYVIRTUALSCREEN)
+    left = win32api.GetSystemMetrics(win32con.SM_XVIRTUALSCREEN)
+    top = win32api.GetSystemMetrics(win32con.SM_YVIRTUALSCREEN)
+    
+    return (width, height, left, top)
+
+#===========================#
+
+def screenshot(name='screenshot'):
+
+    hdesktop = win32gui.GetDesktopWindow()
+    width, height, left, top = getDimensions()
+    
+    desktopDC = win32gui.GetWindowDC(hdesktop)
+    imgDC = win32ui.CreateDCFromHandle(desktopDC)
+    memDC = imgDC.CreateCompatibleDC()
+    
+    screenshot = win32ui.CreateBitmap()
+    screenshot.CreateCompatibleBitmap(imgDC, width, height)
+    memDC.SelectObject(screenshot)
+    memDC.BitBlt((0,0), (width, height), imgDC, (left, top), win32con.SRCCOPY)
+    screenshot.SaveBitmapFile(memDC, f'{name}.bmp')
+    
+    memDC.DeleteDC()
+    win32gui.DeleteObject(screenshot.GetHandle())
+
+#===========================#
+
+def run():
+
+    screenshot()
+    with open('screenshot.bmp') as f:
+        img = f.read()
+    return img
+
+#===========================#
+
+if __name__ == '__main__':
+
+    screenshot()
