@@ -3,6 +3,7 @@
 #===========================#
 
 import base64
+import os
 import win32api
 import win32con
 import win32gui
@@ -45,7 +46,7 @@ def getDimensions():
 
 #===========================#
 
-def screenshot(name='screenshot'):
+def screenshot(name='screenshot.bmp'):
 
     hdesktop = win32gui.GetDesktopWindow()
     width, height, left, top = getDimensions()
@@ -58,10 +59,12 @@ def screenshot(name='screenshot'):
     screenshot.CreateCompatibleBitmap(imgDC, width, height)
     memDC.SelectObject(screenshot)
     memDC.BitBlt((0,0), (width, height), imgDC, (left, top), win32con.SRCCOPY)
-    screenshot.SaveBitmapFile(memDC, f'{name}.bmp')
+    screenshot.SaveBitmapFile(memDC, f'{name}')
     
     memDC.DeleteDC()
     win32gui.DeleteObject(screenshot.GetHandle())
+    
+    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Screenshot taken: [{bcolors.OKCYAN}"+name+f"{bcolors.ENDC}]")
 
 #===========================#
 
