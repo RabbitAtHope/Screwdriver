@@ -60,12 +60,12 @@ def send_data(host='127.0.0.1', port=12345, message="Hello, Server!"):
         # Connect to the server
         client_socket.connect((host, port))
         
-        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connected to [{host}:{port}]")
+        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connected to [{bcolors.WARNING}{host}:{port}{bcolors.ENDC}]")
 
         # Send the message
         client_socket.sendall(message.encode('utf-8'))
         
-        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{message}]")
+        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
 
 #===========================#
 
