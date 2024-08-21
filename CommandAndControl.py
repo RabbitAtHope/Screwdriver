@@ -61,15 +61,7 @@ def handle_client(client_socket, client_address):
 
 #===========================#
 
-def close_client_connection():
-
-    client_socket.close()
-    
-    print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Connection closed.")
-
-#===========================#
-
-def connect_to_server(host='127.0.0.1', port=12345):
+def connect_to_server(host='127.0.0.1', port=12345, message="Hello!"):
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
     
@@ -79,19 +71,20 @@ def connect_to_server(host='127.0.0.1', port=12345):
             client_socket.connect((host, port))
             
             print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connected to [{bcolors.WARNING}{host}:{port}{bcolors.ENDC}]")
+            
+            # Send the message
+            client_socket.sendall(message.encode('utf-8'))
+            
+            print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
+            
+            # Close the connection
+            client_socket.close()
+            
+            print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Connection closed.")
 
         except Exception as e:
         
             print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Error: {e}")
-
-#===========================#
-
-def send_data(message="Hello, Server!"):
-
-    # Send the message
-    client_socket.sendall(message.encode('utf-8'))
-    
-    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
 
 #===========================#
 
