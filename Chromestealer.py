@@ -124,6 +124,7 @@ def login_data_parser(login_data_path, decryption_key):
                 cipher = AES.new(decryption_key, AES.MODE_GCM, iv)
                 decrypted_password = cipher.decrypt(encrypted_password)
                 decrypted_password = decrypted_password.decode('utf-8', errors='replace')
+                decrypted_password = decrypted_password[:-15]
                 
                 print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔗 URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
                 print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
