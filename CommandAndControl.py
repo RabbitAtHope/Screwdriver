@@ -75,7 +75,7 @@ def connect_to_server(host='127.0.0.1', port=12345, message="Hello!"):
             # Send the message
             client_socket.sendall(message.encode('utf-8'))
             
-            print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
+            print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
             
             # Close the connection
             client_socket.close()
