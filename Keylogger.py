@@ -11,6 +11,8 @@ import sys
 import time
 import win32clipboard
 
+#===========================#
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -34,6 +36,33 @@ class bcolors:
     ORANGE = '\033[38;5;208m'
 
 os.system("color")
+
+#===========================#
+
+def connect_to_server(host='127.0.0.1', port=12345, message="Hello!"):
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+    
+        try:
+    
+            # Connect to the server
+            client_socket.connect((host, port))
+            
+            print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connected to [{bcolors.WARNING}{host}:{port}{bcolors.ENDC}]")
+            
+            # Send the message
+            client_socket.sendall(message.encode('utf-8'))
+            
+            print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
+            
+            # Close the connection
+            client_socket.close()
+            
+            print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Connection closed.")
+
+        except Exception as e:
+        
+            print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Error: {e}")
 
 #===========================#
 
