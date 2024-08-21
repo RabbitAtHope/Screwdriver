@@ -61,18 +61,18 @@ def start_server(host='0.0.0.0', port=12345):
         # Listen for incoming connections
         server_socket.listen()
         
-        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Listening on [{host}:{port}]...")
+        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Listening on [{bcolors.WARNING}{host}:{port}{bcolors.ENDC}]...")
 
         # Accept a connection
         while True:
             client_socket, client_address = server_socket.accept()
             with client_socket:
-                print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connection from [{client_address}].")
+                print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connection from [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
                 while True:
                     data = client_socket.recv(1024)  # Buffer size is 1024 bytes
                     if not data:
                         break
-                    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Received: [{data.decode('utf-8')}]")
+                    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Received: [{bcolors.WARNING}{data.decode('utf-8', errors='replace')}{bcolors.ENDC}]")
 
 #===========================#
 
