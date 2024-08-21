@@ -39,17 +39,17 @@ os.system("color") # Comment out on Linux
 
 def handle_client(client_socket, client_address):
     try:
-        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connection from [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
+        print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] Connection from [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
         while True:
             data = client_socket.recv(1024)  # Buffer size is 1024 bytes
             if not data:
                 break
-            print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Received: [{bcolors.WARNING}{data.decode('utf-8', errors='replace')}{bcolors.ENDC}]")
+            print(f"|   [{bcolors.OKGREEN}>{bcolors.ENDC}] Received: [{bcolors.WARNING}{data.decode('utf-8', errors='replace')}{bcolors.ENDC}]")
     except ConnectionError:
-        print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Connection error with [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
+        print(f"|  [{bcolors.WARNING}x{bcolors.ENDC}] Connection error with [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
     finally:
         client_socket.close()
-        print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Connection with [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}] closed.")
+        print(f"|  [{bcolors.WARNING}x{bcolors.ENDC}] Connection with [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}] closed.")
 
 #===========================#
 
