@@ -120,9 +120,9 @@ def login_data_parser(login_data_path, decryption_key):
                 cipher = AES.new(decryption_key, AES.MODE_GCM, iv)
                 decrypted_password = cipher.decrypt(encrypted_password).decode('utf-8')
                 
-                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
-                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
-                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Password: [{bcolors.OKCYAN}" + decrypted_password + f"{bcolors.ENDC}]")
+                print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔗 URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
+                print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
+                print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔑 Password: [{bcolors.OKCYAN}" + decrypted_password + f"{bcolors.ENDC}]")
                 print("----------------------------------")
         
         conn.close()
@@ -148,8 +148,9 @@ def main():
 
             login_data_parser(login_data_path, decryption_key)
             
-        except:
-            print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Google Chrome is not installed, or another error occurred. Shutting down.")
+        except Exception as e:
+        
+            print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Google Chrome is not installed, or another error occurred: "+str(e))
             
     else:
         print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] This program only runs on Windows systems.")
