@@ -3,6 +3,7 @@
 #===========================#
 
 import os
+import platform
 import socket
 
 #===========================#
@@ -76,5 +77,15 @@ def start_server(host='0.0.0.0', port=12345):
 #===========================#
 
 if __name__ == "__main__":
+
+    # Get host information.
+    hostname = socket.gethostname()
+    hostIP = socket.gethostbyname(hostname)
+    systemInfo = platform.system()
+    processorInfo = platform.processor()
+    alive_host = False
+
+    # Print host information.
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] [{bcolors.WARNING}" + hostIP + f"{bcolors.ENDC}] [{bcolors.OKGREEN}" + hostname + f"{bcolors.ENDC}] [{bcolors.OKGREEN}" + systemInfo + f"{bcolors.ENDC}] [{bcolors.OKGREEN}" + processorInfo + f"{bcolors.ENDC}]")
 
     start_server(port=12345)
