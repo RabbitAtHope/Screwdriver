@@ -1,3 +1,7 @@
+#===========================#
+# I M P O R T S             #
+#===========================#
+
 import os
 import json
 import sqlite3
@@ -9,18 +13,35 @@ from Crypto.Protocol.KDF import PBKDF2
 from win32crypt import CryptUnprotectData
 from ctypes.wintypes import MAX_PATH
 
-def is_chrome_installed():
-    chrome_path = r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe"
-    try:
-        with ctypes.WinDLL('Advapi32.dll').RegOpenKeyExW(
-            ctypes.HKEY_LOCAL_MACHINE,
-            chrome_path,
-            0,
-            ctypes.KEY_READ
-        ) as hKey:
-            return True
-    except FileNotFoundError:
-        return False
+#===========================#
+# C O L O R S               #
+#===========================#
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    BLACK = '\033[30m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    MAGENTA = '\033[35m'
+    BACKGROUND_MAGENTA = '\033[105m'
+    BACKGROUND_WHITE = '\033[47m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    ORANGE = YELLOW
+
+os.system("color") # Comment out on Linux
+
+#===========================#
 
 def find_local_state():
     user_profile = os.environ.get("USERPROFILE")
@@ -87,11 +108,13 @@ def login_data_parser(login_data_path, decryption_key):
         print(f"SQL error: {e}")
         return 1
 
+#===========================#
+
 def main():
+
     if os.name == 'nt':
 
-        if is_chrome_installed():
-            print("Google Chrome is installed.")
+        try:
             local_state_path = find_local_state()
             login_data_path = find_login_data()
 
@@ -99,10 +122,14 @@ def main():
             decryption_key = decrypt_key(encrypted_key)
 
             login_data_parser(login_data_path, decryption_key)
-        else:
-            print("Google Chrome is not installed. Shutting down.")
+            
+        except:
+            print("Google Chrome is not installed, or another error occurred. Shutting down.")
+            
     else:
         print("This program only runs on Windows systems.")
+
+#===========================#
 
 if __name__ == "__main__":
     main()
