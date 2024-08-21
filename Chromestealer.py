@@ -74,7 +74,7 @@ def get_encrypted_key(local_state_path):
             local_state = json.load(file)
         encrypted_key = local_state["os_crypt"]["encrypted_key"]
         
-        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Retrieved encrypted key: [{bcolors.WARNING}"+str(encrypted_key)[:50]+f"...{bcolors.ENDC}]")
+        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Retrieved encrypted key: [{bcolors.WARNING}"+str(encrypted_key)+f"{bcolors.ENDC}]")
         
         return encrypted_key
         
@@ -87,7 +87,7 @@ def decrypt_key(encrypted_key):
     encrypted_key = base64.b64decode(encrypted_key)[5:]  # Remove "DPAPI" prefix
     decrypted_key = CryptUnprotectData(encrypted_key, None, None, None, 0)[1]
     
-    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Decrypted key: [{bcolors.WARNING}"+str(decrypted_key)[:50]+f"...{bcolors.ENDC}]")
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Decrypted key: [{bcolors.WARNING}"+str(decrypted_key)+f"{bcolors.ENDC}]")
     
     return decrypted_key
 
@@ -112,6 +112,8 @@ def login_data_parser(login_data_path, decryption_key):
         
         print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Executed username and password retrieval query.")
 
+        print(f"| ----------------------------------")
+
         for row in cursor.fetchall():
         
             origin_url, username_value, encrypted_password, blacklisted_by_user = row
@@ -126,9 +128,9 @@ def login_data_parser(login_data_path, decryption_key):
                 decrypted_password = decrypted_password.decode('utf-8', errors='replace')
                 decrypted_password = decrypted_password[:-15]
                 
-                print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔗 URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
-                print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
-                print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔑 Password: [{bcolors.OKCYAN}" + decrypted_password + f"{bcolors.ENDC}]")
+                print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔗 [{bcolors.WARNING}URL{bcolors.ENDC}]: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
+                print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 [{bcolors.WARNING}Username{bcolors.ENDC}]: [{bcolors.OKGREEN}" + username_value + f"{bcolors.ENDC}]")
+                print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔑 [{bcolors.WARNING}Password{bcolors.ENDC}]: [{bcolors.FAIL}" + decrypted_password + f"{bcolors.ENDC}]")
                 print(f"| ----------------------------------")
         
         conn.close()
