@@ -39,14 +39,18 @@ os.system("color") # Comment out on Linux
 
 def handle_client(client_socket, client_address):
     try:
+    
         print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] Connection from [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
+        
         while True:
             data = client_socket.recv(1024)  # Buffer size is 1024 bytes
             if not data:
                 break
             print(f"|   [{bcolors.OKGREEN}>{bcolors.ENDC}] Received: [{bcolors.WARNING}{data.decode('utf-8', errors='replace')}{bcolors.ENDC}]")
+    
     except ConnectionError:
         print(f"|  [{bcolors.WARNING}x{bcolors.ENDC}] Connection error with [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
+    
     finally:
         client_socket.close()
         print(f"|  [{bcolors.WARNING}x{bcolors.ENDC}] Connection with [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}] closed.")
@@ -57,19 +61,24 @@ def send_data(host='127.0.0.1', port=12345, message="Hello, Server!"):
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
     
-        # Connect to the server
-        client_socket.connect((host, port))
-        
-        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connected to [{bcolors.WARNING}{host}:{port}{bcolors.ENDC}]")
+        try:
+    
+            # Connect to the server
+            client_socket.connect((host, port))
+            
+            print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connected to [{bcolors.WARNING}{host}:{port}{bcolors.ENDC}]")
 
-        # Send the message
-        client_socket.sendall(message.encode('utf-8'))
-        
-        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
-        
-        client_socket.close()
-        
-        print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Connection closed.")
+            # Send the message
+            client_socket.sendall(message.encode('utf-8'))
+            
+            print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
+            
+            client_socket.close()
+            
+            print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Connection closed.")
+
+        except Exception as e:
+            print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Error: {e}")
 
 #===========================#
 
