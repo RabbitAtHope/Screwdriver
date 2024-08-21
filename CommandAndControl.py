@@ -5,6 +5,7 @@
 import os
 import platform
 import socket
+import threading
 
 #===========================#
 # C O L O R S               #
@@ -36,6 +37,22 @@ os.system("color") # Comment out on Linux
 
 #===========================#
 
+def handle_client(client_socket, client_address):
+    try:
+        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connection from [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
+        while True:
+            data = client_socket.recv(1024)  # Buffer size is 1024 bytes
+            if not data:
+                break
+            print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Received: [{bcolors.WARNING}{data.decode('utf-8', errors='replace')}{bcolors.ENDC}]")
+    except ConnectionError:
+        print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Connection error with [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
+    finally:
+        client_socket.close()
+        print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Connection with [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}] closed.")
+
+#===========================#
+
 def send_data(host='127.0.0.1', port=12345, message="Hello, Server!"):
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
@@ -63,16 +80,19 @@ def start_server(host='0.0.0.0', port=12345):
         
         print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Listening on [{bcolors.WARNING}{host}:{port}{bcolors.ENDC}]...")
 
-        # Accept a connection
         while True:
-            client_socket, client_address = server_socket.accept()
-            with client_socket:
-                print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connection from [{bcolors.OKCYAN}{client_address}{bcolors.ENDC}].")
-                while True:
-                    data = client_socket.recv(1024)  # Buffer size is 1024 bytes
-                    if not data:
-                        break
-                    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Received: [{bcolors.WARNING}{data.decode('utf-8', errors='replace')}{bcolors.ENDC}]")
+            try:
+            
+                client_socket, client_address = server_socket.accept()
+                client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
+                client_thread.daemon = True
+                client_thread.start()
+                
+            except KeyboardInterrupt:
+                print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Server shutting down...")
+                break
+            except Exception as e:
+                print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Error: {e}")
 
 #===========================#
 
