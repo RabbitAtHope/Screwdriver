@@ -53,7 +53,7 @@ def find_local_state():
     
     local_state_path = os.path.join(user_profile, r"AppData\Local\Google\Chrome\User Data\Local State")
     
-    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Local State file: [{bcolors.WARNING}"+str(local_state_path)+f"{bcolors.ENDC}]")
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Local state file: [{bcolors.WARNING}"+str(local_state_path)+f"{bcolors.ENDC}]")
     return local_state_path
 
 def find_login_data():
@@ -64,7 +64,7 @@ def find_login_data():
     
     login_data_path = os.path.join(user_profile, r"AppData\Local\Google\Chrome\User Data\Default\Login Data")
     
-    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Login Data file: [{bcolors.WARNING}"+str(login_data_path)+f"{bcolors.ENDC}]")
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Login data file: [{bcolors.WARNING}"+str(login_data_path)+f"{bcolors.ENDC}]")
     return login_data_path
 
 def get_encrypted_key(local_state_path):
