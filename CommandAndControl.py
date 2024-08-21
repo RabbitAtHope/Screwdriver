@@ -66,6 +66,10 @@ def send_data(host='127.0.0.1', port=12345, message="Hello, Server!"):
         client_socket.sendall(message.encode('utf-8'))
         
         print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
+        
+        client_socket.close()
+        
+        print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Connection closed.")
 
 #===========================#
 
