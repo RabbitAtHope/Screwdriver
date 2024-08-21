@@ -45,22 +45,23 @@ os.system("color") # Comment out on Linux
 
 def find_local_state():
     user_profile = os.environ.get("USERPROFILE")
+    
     if not user_profile:
-        print("Error getting user path.")
+        print("| [{bcolors.FAIL}x{bcolors.ENDC}] Error getting user path.")
         return ""
     
     local_state_path = os.path.join(user_profile, r"AppData\Local\Google\Chrome\User Data\Local State")
-    print(f"Full path to Local State file: {local_state_path}")
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Local State file: {local_state_path}")
     return local_state_path
 
 def find_login_data():
     user_profile = os.environ.get("USERPROFILE")
     if not user_profile:
-        print("Error getting user path.")
+        print("| [{bcolors.FAIL}x{bcolors.ENDC}] Error getting user path.")
         return ""
     
     login_data_path = os.path.join(user_profile, r"AppData\Local\Google\Chrome\User Data\Default\Login Data")
-    print(f"Full path to Login Data file: {login_data_path}")
+    print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Full path to Login Data file: {login_data_path}")
     return login_data_path
 
 def get_encrypted_key(local_state_path):
@@ -70,7 +71,7 @@ def get_encrypted_key(local_state_path):
         encrypted_key = local_state["os_crypt"]["encrypted_key"]
         return encrypted_key
     except (FileNotFoundError, KeyError) as e:
-        print(f"Error: {e}")
+        print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Error: {e}")
         return ""
 
 def decrypt_key(encrypted_key):
@@ -96,16 +97,16 @@ def login_data_parser(login_data_path, decryption_key):
                 cipher = AES.new(decryption_key, AES.MODE_GCM, iv)
                 decrypted_password = cipher.decrypt(encrypted_password).decode('utf-8')
                 
-                print(f"Origin URL: {origin_url}")
-                print(f"Username Value: {username_value}")
-                print(f"Password: {decrypted_password}")
+                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Origin URL: {origin_url}")
+                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Username Value: {username_value}")
+                print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Password: {decrypted_password}")
                 print("----------------------------------")
         
         conn.close()
         os.remove(temp_login_data_path)
         return 0
     except sqlite3.Error as e:
-        print(f"SQL error: {e}")
+        print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] SQL error: {e}")
         return 1
 
 #===========================#
@@ -124,10 +125,10 @@ def main():
             login_data_parser(login_data_path, decryption_key)
             
         except:
-            print("Google Chrome is not installed, or another error occurred. Shutting down.")
+            print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Google Chrome is not installed, or another error occurred. Shutting down.")
             
     else:
-        print("This program only runs on Windows systems.")
+        print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] This program only runs on Windows systems.")
 
 #===========================#
 
