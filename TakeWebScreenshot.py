@@ -40,7 +40,7 @@ os.system("color") # Comment out on Linux
 
 #===========================#
 
-def take_screenshot(url, filename, name=None, headless=True, width=None, height=None, wait=None):
+def take_screenshot(url, filename, name=None, headless=True, width=1920, height=1080, wait=None):
 
     if name is None:
         now = datetime.datetime.now()
