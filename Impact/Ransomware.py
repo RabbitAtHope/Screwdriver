@@ -68,6 +68,7 @@ def generate_key():
 
     key = Fernet.generate_key()
     
+    # Write the key to a file
     with open(keyfilePath, "wb") as filekey:
         filekey.write(key)
     
